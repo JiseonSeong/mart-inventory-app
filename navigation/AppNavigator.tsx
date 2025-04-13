@@ -3,6 +3,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import ProductListScreen from '../screens/ProductListScreen';
+import ProductRegisterScreen from '../screens/ProductRegisterScreen';
 
 //각 화면의 이름과 파라미터 정의
 //undefined는 해당 화면으로 이동할 때 별로의 전달 값(파라미터)가 없음을 의미
@@ -10,6 +11,7 @@ import ProductListScreen from '../screens/ProductListScreen';
 export type RootStackParamList = {
     Login: undefined;
     ProductList: undefined;
+    ProductRegister: undefined; //ProductRegister 화면 추가
     };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -23,6 +25,7 @@ export default function AppNavigator() {
         <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: true }}/>
             <Stack.Screen name="ProductList" component={ProductListScreen} />
+            <Stack.Screen name="ProductRegister" component={ProductRegisterScreen} options={{ title: '상품 등록' }}/>
         </Stack.Navigator>
     );
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { useNavigation } from "@react-navigation/native";
 
 type Product = {
     id: string;
@@ -17,6 +18,8 @@ type Product = {
 export default function ProductListScreen() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const navigation = useNavigation();
+    //useNavigation을 사용하여, 현재 화면의 네비게이션 속성을 가져옴
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -59,6 +62,14 @@ export default function ProductListScreen() {
                     </View>
                 )}
             />
+
+            {/* 상품등록 버튼 */}
+            <TouchableOpacity
+                style={{ backgroundColor: '#007BFF', padding: 10, borderRadius: 5, marginTop: 20 }}
+                onPress={() => navigation.navigate('ProductRegister' as never)} //타입 에러방지 
+            >
+                <Text style={{ color: '#fff', textAlign: 'center' }}>상품등록</Text>
+            </TouchableOpacity>
         </View>
     );
 }
