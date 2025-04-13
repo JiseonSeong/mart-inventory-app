@@ -65,10 +65,10 @@ export default function ProductListScreen() {
 
             {/* 상품등록 버튼 */}
             <TouchableOpacity
-                style={{ backgroundColor: '#007BFF', padding: 10, borderRadius: 5, marginTop: 20 }}
+                style={styles.addButton}
                 onPress={() => navigation.navigate('ProductRegister' as never)} //타입 에러방지 
             >
-                <Text style={{ color: '#fff', textAlign: 'center' }}>상품등록</Text>
+                <Text style={styles.addButtonText}>상품등록</Text>
             </TouchableOpacity>
         </View>
     );
@@ -84,6 +84,18 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         fontWeight: 'bold',
-    }
+    },
+    addButton: {
+        backgroundColor: '#007BFF',
+        padding: 14,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    addButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 
 });

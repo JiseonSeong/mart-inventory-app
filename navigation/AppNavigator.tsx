@@ -25,7 +25,7 @@ export default function AppNavigator() {
         <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: true }}/>
             <Stack.Screen name="ProductList" component={ProductListScreen} />
-            <Stack.Screen name="ProductRegister" component={ProductRegisterScreen} options={{ title: '상품 등록' }}/>
+            <Stack.Screen name="ProductRegister" component={ProductRegisterScreen} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
 }
