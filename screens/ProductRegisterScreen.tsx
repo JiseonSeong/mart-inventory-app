@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, TextInput, Button, Text, StyleSheet, ScrollView, Alert} from "react-native";
+import { View, TextInput, Button, Text, StyleSheet, ScrollView, TouchableOpacity, Alert} from "react-native";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -36,6 +36,20 @@ const ProductRegisterScreen = ({navigation}: any) => {
             console.error("상품 등록 실패: ", error);
             Alert.alert("상품 등록 실패", "다시 시도해주세요.");
         }
+    };
+
+   
+    const handleExpirationDate = (text: string) => {
+        const numericText = text.replace(/[^0-9]/g, ''); //숫자만 입력받기
+        if (numericText.length <= 8) {
+            setExpirationDate(numericText);
+        }
+    };
+
+    const getFormatLabel = () => {
+        if (expirationDate.length === 8) return `${expirationDate.slice(0, 4)}-${expirationDate.slice(4, 6)}-${expirationDate.slice(6, 8)}`;
+        if (expirationDate.length === 6) return `${expirationDate.slice(0, 4)}-${expirationDate.slice(4, 6)}`;
+        return '*예시: 20250413 or 202504';
     };
 
     return (
@@ -84,13 +98,8 @@ const ProductRegisterScreen = ({navigation}: any) => {
                 placeholderTextColor="#888"
             />
             <Text style={styles.label}>유통기한</Text>
-            <TextInput
-                placeholder="유통기한"
-                value={expirationDate}
-                onChangeText={setExpirationDate}
-                style={styles.input}
-                placeholderTextColor="#888"
-            />
+            <TextInput style={styles.input} placeholder="없음" value={expirationDate} keyboardType="numeric" onChangeText={handleExpirationDate} maxLength={8} placeholderTextColor="#888"/>
+            <Text style={styles.helperText}>{getFormatLabel()}</Text>
             <Text style={styles.label}>재고 수량</Text>
             <TextInput
                 placeholder="0"
@@ -120,6 +129,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
+        marginTop: 10,
         marginBottom: 5,
         textAlign: "left",
         fontWeight: "bold",
@@ -128,10 +138,16 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: "#ccc",
         borderWidth: 1,
-        marginBottom: 12,
+        marginBottom: 5,
         paddingLeft: 8,
         borderRadius: 5,
-    }
+    },
+    helperText: {
+        fontSize: 12,
+        color: "#888",
+        marginTop: 0,
+        textAlign: "left",
+    },
 });
 
 export default ProductRegisterScreen;
