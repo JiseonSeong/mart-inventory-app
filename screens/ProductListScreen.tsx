@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
-import { collection, getDocs } from 'firebase/firestore';
+import { View, Text, FlatList, StyleSheet, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 type Product = {
@@ -19,23 +19,17 @@ export default function ProductListScreen() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'items')); //fetch products from firestore
-            
-                const productsData: Product[] = [];
-                querySnapshot.forEach((doc) => {
-                    productsData.push({ id: doc.id, ...doc.data() } as Product);
-                });
-                setProducts(productsData);
-            } catch (error) {
-                console.error("Error fetching products: ", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const unsubscribe = onSnapshot(collection(db, 'items'), (snapshot) => {
+            const productsData: Product[] = snapshot.docs.map((doc) => ({
+                id: doc.id, ...doc.data()} as Product));
+            setProducts(productsData);
+            setLoading(false);
+        }, (error) => {
+            console.error("실시간 데이터 수신 오류", error);
+            setLoading(false);
+        });
 
-        fetchProducts();
+        return () => unsubscribe(); // Clean up the subscription on unmount
     }, []);
 
     if (loading) {
